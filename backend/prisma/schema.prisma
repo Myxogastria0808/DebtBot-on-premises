@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "cockroachdb"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  cockroachdbId   BigInt   @id @default(autoincrement())
+  discordId       String   @unique
+  discordUsername String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  debtBorrow      Debt[]   @relation("Borrow")
+  debtLend        Debt[]   @relation("Lend")
+}
+
+model Debt {
+  cockroachdbId  BigInt       @id @default(autoincrement())
+  money          Int
+  isPayOff       Boolean
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  lendId         String
+  borrowId       String
+  id             BigInt       @unique
+  borrow         User         @relation("Borrow", fields: [borrowId], references: [discordId])
+  sampleRecordId DebtRecordId @relation(fields: [id], references: [id])
+  lend           User         @relation("Lend", fields: [lendId], references: [discordId])
+}
+
+model DebtRecordId {
+  cockroachdbId BigInt @id @default(autoincrement())
+  id            BigInt @unique
+  tag           Tag
+  debt          Debt?
+}
+
+enum Tag {
+  LATEST
+  OLD
+}

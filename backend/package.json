@@ -1,0 +1,26 @@
+{
+    "scripts": {
+        "dev:hono": "wrangler dev src/index.ts",
+        "deploy": "wrangler deploy --minify src/index.ts",
+        "init:prisma": "ts-node-dev --project src/db/tsconfig.json src/db/src/init.ts",
+        "dev:prisma:user": "ts-node-dev --project src/db/tsconfig.json src/db/src/user.ts",
+        "dev:prisma:debt": "ts-node-dev --project src/db/tsconfig.json src/db/src/debt.ts",
+        "check:prisma": "ts-node-dev --project src/db/tsconfig.json src/db/src/checkData/index.ts",
+        "migrate": "prisma migrate dev --name init && prisma generate"
+    },
+    "dependencies": {
+        "@prisma/client": "^5.16.1",
+        "@types/dotenv": "^8.2.0",
+        "dotenv": "^16.4.5",
+        "hono": "^4.4.12"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20240620.0",
+        "@types/node": "^20.14.9",
+        "prisma": "^5.15.1",
+        "ts-node-dev": "^2.0.0",
+        "tsx": "^4.16.2",
+        "typescript": "^5.4.5",
+        "wrangler": "^3.62.0"
+    }
+}
